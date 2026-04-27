@@ -21,14 +21,4 @@ public class RunnerzApplication {
 		SpringApplication.run(RunnerzApplication.class, args);
 	}
 
-	@Bean
-	CommandLineRunner runner(){
-		return args -> {
-			Run run = new Run(1, "First Run", LocalDateTime.now(), LocalDateTime.now().plus(2, ChronoUnit.HOURS)
-			, 8, Location.OUTDOOR);
-
-			log.info("Run : " + run);
-		};
-	}
-
 }
