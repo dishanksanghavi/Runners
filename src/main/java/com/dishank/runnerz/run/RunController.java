@@ -3,7 +3,6 @@ package com.dishank.runnerz.run;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,19 +34,24 @@ public class RunController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     void addRun(@Valid @RequestBody Run run){
-        runRepository.create(run);
+        runRepository.save(run);
     }
-//
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    @PutMapping("/{id}")
-//    void updateRuns(@Valid @RequestBody Run run, @PathVariable Integer id){
-//        runRepository.update(run, id);
-//    }
-//
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    @DeleteMapping("/{id}")
-//    void deleteRun(@PathVariable Integer id){
-//        runRepository.delete(id);
-//    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping("/{id}")
+    void updateRuns(@Valid @RequestBody Run run, @PathVariable Integer id){
+        runRepository.save(run);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    void deleteRun(@PathVariable Integer id){
+        Optional<Run> run = runRepository.findById(id);
+        if (run.isEmpty()){
+            throw new RunNotFoundException();
+        }else {
+            runRepository.delete(run.get());
+        }
+    }
 
 }
